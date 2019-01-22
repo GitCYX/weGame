@@ -1,0 +1,74 @@
+{
+  "collision-matrix": [
+    [
+      false
+    ],
+    [
+      false,
+      true,
+      true,
+      null,
+      null,
+      true
+    ],
+    [
+      false,
+      true,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      true
+    ],
+    [
+      false,
+      false,
+      false,
+      true,
+      false
+    ],
+    [
+      false,
+      true,
+      false,
+      false,
+      false,
+      false
+    ]
+  ],
+  "design-resolution-height": 1280,
+  "design-resolution-width": 720,
+  "excluded-modules": [],
+  "facebook": {
+    "appID": "",
+    "audience": {
+      "enable": false
+    },
+    "enable": false,
+    "live": {
+      "enable": false
+    }
+  },
+  "fit-height": true,
+  "fit-width": true,
+  "group-list": [
+    "default",
+    "Wall",
+    "Ball",
+    "hole",
+    "BallCenter",
+    "limitedSenser"
+  ],
+  "last-module-event-record-time": 0,
+  "simulator-orientation": false,
+  "simulator-resolution": {
+    "height": 640,
+    "width": 960
+  },
+  "start-scene": "eec67354-3e5c-4f83-83c0-64cbcb52f4d4",
+  "use-customize-simulator": false,
+  "use-project-simulator-setting": false
+}
