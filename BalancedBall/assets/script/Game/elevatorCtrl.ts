@@ -10,8 +10,8 @@ export default class elevatorCtrl extends cc.Component {
     rightLift: cc.Node = null;
 
  
-    highestY:number = 850;
-    lowestY:number = -300;
+    highestY:number = 1570;
+    lowestY:number = -67;
 
     perLiftDis:number = 10;
     totalCanClick:number = 10;

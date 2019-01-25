@@ -73,16 +73,46 @@ export default class gameUICtrl extends cc.Component {
         let ballComp = ball.getComponent(ballCtrl);
         ballComp.initBall(50,this);
 
-        let hole = cc.instantiate(this.holePref);
-        hole.parent = this.node;
-        hole.position = new cc.Vec2(0,0);
-        let holeComp = hole.getComponent(holeCtrl);
-        holeComp.initHole(50);
+        for(let i=0; i<4; i++)
+        {
+            let hole = cc.instantiate(this.holePref);
+            hole.parent = this.node;
+            hole.position = new cc.Vec2(i*100,i*100);
+            let holeComp = hole.getComponent(holeCtrl);
+            holeComp.initHole(50+i*20);
+        }
+       
+        for(let i=0; i<4; i++)
+        {
+            let hole = cc.instantiate(this.holePref);
+            hole.parent = this.node;
+            hole.position = new cc.Vec2(-i*100,i*100+100);
+            let holeComp = hole.getComponent(holeCtrl);
+            holeComp.initHole(50+i*20);
+        }
+
+        for(let i=0; i<4; i++)
+        {
+            let hole = cc.instantiate(this.holePref);
+            hole.parent = this.node;
+            hole.position = new cc.Vec2(-i*100,-i*100);
+            let holeComp = hole.getComponent(holeCtrl);
+            holeComp.initHole(50+i*20);
+        }
+       
+        for(let i=0; i<4; i++)
+        {
+            let hole = cc.instantiate(this.holePref);
+            hole.parent = this.node;
+            hole.position = new cc.Vec2(i*100,-i*100-100);
+            let holeComp = hole.getComponent(holeCtrl);
+            holeComp.initHole(50+i*20);
+        }
 
         let exithole = cc.instantiate(this.exitHolePref);
         exithole.parent = this.node;
-        exithole.position = new cc.Vec2(200,200);
-        let exitholeComp = hole.getComponent(holeCtrl);
+        exithole.position = new cc.Vec2(200,500);
+        let exitholeComp = exithole.getComponent(holeCtrl);
         exitholeComp.initHole(50);
     }
 
@@ -245,6 +275,31 @@ export default class gameUICtrl extends cc.Component {
             }
         }
         this.countTime.string = hour + ":" + minute + ":" + seconds;
+    }
+
+    testSerialize()
+    {
+            var students = [{
+                    "name": "小明1",
+                   "age": "6",
+                    "sex": "男",
+                    "height": "60"
+                }, 
+                {
+                     "name": "小明2",
+                    "age": "7",
+                    "sex": "男",
+                    "height": "70"
+                },
+                {
+                 "name": "小明3",
+                    "age": "8",
+                    "sex": "男",
+                    "height": "80"
+                }];
+                let data = JSON.stringify(students)
+                jsb.fileUtils.writeStringToFile (data, "e:\hello.json");
+                       
     }
     // update (dt) {}
 }
