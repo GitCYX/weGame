@@ -1,7 +1,7 @@
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class limiteCtrl extends cc.Component {
+export default class LimiteCtrl extends cc.Component {
 
     @property(cc.RigidBody)
     rigidBody:cc.RigidBody = null;

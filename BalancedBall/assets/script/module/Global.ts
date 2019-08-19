@@ -51,22 +51,44 @@ export class Global{
 		OPEN:3,
 	});
 
-	static OpenPromptBox = function(mode,text,callback,autoClose = true,loadFinish = undefined)
+	static OpenPromptBox = function(mode, text, callback, autoClose = true, loadFinish = undefined)
 	{
 		cc.loader.loadRes("prefab/common/PromptBox", function (err, prefab) {
 			let newNode = cc.instantiate(prefab);
 			let controlerComp = newNode.getComponent('PromptBoxController');
 			controlerComp.setup(mode,text,callback,autoClose);
 			cc.director.getScene().addChild(newNode);
-			if(loadFinish){
+			if (loadFinish)
+			{
 				loadFinish();
 			}
 		});
 	}
 
-	//[min,max)
-	static GetRandomInt = function (min, max) {
+	/**
+	 * [min,max)
+	 */
+	static GetRandomInt = function (min, max)
+	{
 		var ratio = cc.random0To1();
 		return min + Math.floor((max - min) * ratio);
 	};
+
+	static TimeFormt = function (sec:number) : string
+	{
+		if (sec <= 0)
+		{
+			return "00:00:00"
+		}
+		let h = parseInt((sec / 3600).toString());
+        let m = parseInt(((sec % 3600) / 60).toString());
+        let s = sec % 60;
+        let hour = '';
+        let minute = '';
+		let seconds ='';
+		hour = h < 10 ? ("0" + h) : h.toString();
+		minute = m < 10 ? ("0" + m) : m.toString();
+        seconds = s < 10 ? ("0" + s) : s.toString();
+		return hour + ":" + minute + ":" + seconds;
+	}
 }

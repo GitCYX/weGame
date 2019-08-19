@@ -1,7 +1,7 @@
 const {ccclass, property} = cc._decorator;
-import gameUICtrl from './gameUICtrl';
+import gameUICtrl from './GameUICtrl';
 @ccclass
-export default class gameLogic extends cc.Component {
+export default class GameLogic extends cc.Component {
 
     gameUICtrl:gameUICtrl = null;
     // LIFE-CYCLE CALLBACKS:

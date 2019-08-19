@@ -1,7 +1,7 @@
 const {ccclass, property} = cc._decorator;
-import gameUICrtl from './gameUICtrl';
+import gameUICrtl from './GameUICtrl';
 @ccclass
-export default class ballCenterCtrl extends cc.Component {
+export default class BallCenterCtrl extends cc.Component {
 
     @property(cc.RigidBody)
     rigidbody: cc.RigidBody = null;

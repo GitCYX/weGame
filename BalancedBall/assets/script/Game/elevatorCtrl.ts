@@ -1,6 +1,6 @@
 const {ccclass, property} = cc._decorator;
 @ccclass
-export default class elevatorCtrl extends cc.Component {
+export default class ElevatorCtrl extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
     @property(cc.Node)

@@ -1,8 +1,8 @@
 const {ccclass, property} = cc._decorator;
-import gameUICtrl from './gameUICtrl';
-import ballCenterCtrl from './ballCenterCtrl';
+import gameUICtrl from './GameUICtrl';
+import ballCenterCtrl from './BallCenterCtrl';
 @ccclass
-export default class ballCtrl extends cc.Component {
+export default class BallCtrl extends cc.Component {
 
     @property(ballCenterCtrl)
     ballCenterCtrl: ballCenterCtrl = null;

@@ -1,7 +1,7 @@
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class holeCtrl extends cc.Component {
+export default class HoleCtrl extends cc.Component {
 
     @property(cc.RigidBody)
     rigidbody: cc.RigidBody = null;

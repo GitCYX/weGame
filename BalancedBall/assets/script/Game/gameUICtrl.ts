@@ -1,12 +1,13 @@
 const {ccclass, property} = cc._decorator;
-import elevatorCtrl from './elevatorCtrl';
-import createScrewAxis from './createScrewAxis';
-import gameLogic from './gameLogic';
-import ballCtrl from './ballCtrl';
+import elevatorCtrl from './ElevatorCtrl';
+import createScrewAxis from './CreateScrewAxis';
+import gameLogic from './GameLogic';
+import ballCtrl from './BallCtrl';
 import LanguageMgr from '../module/i18n/LanguageMgr';
-import holeCtrl from './holeCtrl';
+import holeCtrl from './HoleCtrl';
+import { Global } from '../module/Global';
 @ccclass
-export default class gameUICtrl extends cc.Component {
+export default class GameUICtrl extends cc.Component {
 
     @property(createScrewAxis)
     leftScrewCtrl: createScrewAxis = null;
@@ -37,7 +38,19 @@ export default class gameUICtrl extends cc.Component {
 
     @property(cc.Camera)
     mainCamera: cc.Camera = null;
-    // LIFE-CYCLE CALLBACKS:
+
+    @property(cc.Node)
+    rightUpBtn: cc.Node = null;
+
+    @property(cc.Node)
+    rightDownBtn: cc.Node = null;
+
+    @property(cc.Node)
+    leftUpBtn: cc.Node = null;
+
+    @property(cc.Node)
+    leftDownBtn: cc.Node = null;
+
     isGameOver:boolean = false;
     def_BallPos:cc.Vec2 = cc.v2(0,-300);
     _timeNow:number = 0;
@@ -46,12 +59,24 @@ export default class gameUICtrl extends cc.Component {
     {
         let manager = cc.director.getPhysicsManager();
         manager.enabled = true;
-        manager.gravity =  cc.v2(0,-300);
+        manager.gravity =  cc.v2(0, -300);
         //manager.debugDrawFlags = 1;
         this.leftScrewCtrl.setMainUICtrl(this);
         this.rightScrewCtrl.setMainUICtrl(this);
         this.gameLogic.setMainUICtrl(this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+        this.leftUpBtn.on(cc.Node.EventType.TOUCH_START, ()=>{
+            this.leftUpBtnClick();
+        });
+        this.leftDownBtn.on(cc.Node.EventType.TOUCH_START, ()=>{
+            this.leftDownBtnClick();
+        });
+        this.rightUpBtn.on(cc.Node.EventType.TOUCH_START, ()=>{
+            this.rightUpBtnClick();
+        });
+        this.rightDownBtn.on(cc.Node.EventType.TOUCH_START, ()=>{
+            this.rightDownBtnClick();
+        });
     }
 
     onDestroy () {
@@ -71,47 +96,47 @@ export default class gameUICtrl extends cc.Component {
         ball.parent = this.node;
         ball.position = this.def_BallPos;
         let ballComp = ball.getComponent(ballCtrl);
-        ballComp.initBall(50,this);
+        ballComp.initBall(50, this);
 
-        for(let i=0; i<4; i++)
+        for (let i = 0; i < 4; i++)
         {
             let hole = cc.instantiate(this.holePref);
             hole.parent = this.node;
-            hole.position = new cc.Vec2(i*100,i*100);
+            hole.position = new cc.Vec2(i * 100, i * 100);
             let holeComp = hole.getComponent(holeCtrl);
-            holeComp.initHole(50+i*20);
+            holeComp.initHole(50 + i * 20);
         }
        
-        for(let i=0; i<4; i++)
+        for (let i = 0; i < 4; i++)
         {
             let hole = cc.instantiate(this.holePref);
             hole.parent = this.node;
-            hole.position = new cc.Vec2(-i*100,i*100+100);
+            hole.position = new cc.Vec2(-i * 100, i * 100 + 100);
             let holeComp = hole.getComponent(holeCtrl);
-            holeComp.initHole(50+i*20);
+            holeComp.initHole(50 + i * 20);
         }
 
-        for(let i=0; i<4; i++)
+        for (let i = 0; i < 4; i++)
         {
             let hole = cc.instantiate(this.holePref);
             hole.parent = this.node;
-            hole.position = new cc.Vec2(-i*100,-i*100);
+            hole.position = new cc.Vec2(-i * 100,-i * 100);
             let holeComp = hole.getComponent(holeCtrl);
-            holeComp.initHole(50+i*20);
+            holeComp.initHole(50 + i * 20);
         }
        
-        for(let i=0; i<4; i++)
+        for (let i = 0; i < 4; i++)
         {
             let hole = cc.instantiate(this.holePref);
             hole.parent = this.node;
-            hole.position = new cc.Vec2(i*100,-i*100-100);
+            hole.position = new cc.Vec2(i * 100, -i * 100 - 100);
             let holeComp = hole.getComponent(holeCtrl);
-            holeComp.initHole(50+i*20);
+            holeComp.initHole(50 + i * 20);
         }
 
         let exithole = cc.instantiate(this.exitHolePref);
         exithole.parent = this.node;
-        exithole.position = new cc.Vec2(200,500);
+        exithole.position = new cc.Vec2(200, 500);
         let exitholeComp = exithole.getComponent(holeCtrl);
         exitholeComp.initHole(50);
     }
@@ -120,7 +145,7 @@ export default class gameUICtrl extends cc.Component {
     {
         this.gameResult.node.active = true;
         this.gameResult.node.zIndex = 50;
-        if(result)
+        if (result)
         {
             this.isGameOver = true;
             let str = LanguageMgr.instance.getLabel('winGame');
@@ -137,11 +162,12 @@ export default class gameUICtrl extends cc.Component {
 
     onKeyDown(event)
     {
-        if(this.isGameOver)
+        if (this.isGameOver)
         {
            return;
         }
-        switch(event.keyCode) {
+
+        switch (event.keyCode) {
             case cc.macro.KEY.w:
                 this.leftUpBtnClick();
                 break;
@@ -159,147 +185,73 @@ export default class gameUICtrl extends cc.Component {
 
     leftUpBtnClick()
     {
-        if(this.isGameOver || !this.elevatorCtrl.canClockRotate() || this.elevatorCtrl.getLeftUpLimited())
+        if (this.isGameOver || !this.elevatorCtrl.canClockRotate() || this.elevatorCtrl.getLeftUpLimited())
         {
            return;
         }
-       this.leftScrewCtrl.playRiseAnim();
-       this.elevatorCtrl.leftMove_up();
+
+        this.leftScrewCtrl.playRiseAnim();
+        this.elevatorCtrl.leftMove_up();
     }
 
     leftDownBtnClick()
     {
-        if(this.isGameOver || !this.elevatorCtrl.canAnticlockRotate() || this.elevatorCtrl.getLeftDownLimited())
+        if (this.isGameOver || !this.elevatorCtrl.canAnticlockRotate() || this.elevatorCtrl.getLeftDownLimited())
         {
            return;
         }
-       this.leftScrewCtrl.playDescendAnim();
-       this.elevatorCtrl.leftMove_down();
+
+        this.leftScrewCtrl.playDescendAnim();
+        this.elevatorCtrl.leftMove_down();
     }
 
     rightUpBtnClick()
     {
-        if(this.isGameOver || !this.elevatorCtrl.canAnticlockRotate() || this.elevatorCtrl.getRightUpLimited())
+        if (this.isGameOver || !this.elevatorCtrl.canAnticlockRotate() || this.elevatorCtrl.getRightUpLimited())
         {
            return;
         }
+
         this.rightScrewCtrl.playRiseAnim();
         this.elevatorCtrl.rightMove_up();
     }
 
     rightDownBtnClick()
     {
-        if(this.isGameOver || !this.elevatorCtrl.canClockRotate() || this.elevatorCtrl.getRightDownLimited())
+        if (this.isGameOver || !this.elevatorCtrl.canClockRotate() || this.elevatorCtrl.getRightDownLimited())
         {
            return;
         }
+
         this.rightScrewCtrl.playDescendAnim();
         this.elevatorCtrl.rightMove_down();
     }
 
-    updateTime()//倒计时
+    /**
+     * 倒计时
+     */
+    updateTime()
     {
         this.schedule(function(){
             this.dealTime();
-        },1);
+        }, 1);
     }
 
     dealTime()
     {
-        if(this.isGameOver)
+        if (this.isGameOver)
         {
             this.unscheduleAllCallbacks();
             return;
         }
-        if(this._timeNow <= 0)
+
+        if (this._timeNow <= 0)
         {
             this.unscheduleAllCallbacks();
             this.setGameOver(false);
             return;
         }
         this._timeNow -= 1;  
-        this.changeTimeFormat();
+        this.countTime.string = Global.TimeFormt(this._timeNow);
     }
-
-    changeTimeFormat()
-    {
-        let h = parseInt((this._timeNow/3600).toString());
-        let m = parseInt(((this._timeNow%3600)/60).toString());
-        let s = this._timeNow % 60;
-        let hour='';
-        let minute='';
-        let seconds='';
-        if(h < 0)
-        {
-            hour = "00";
-        }
-        else
-        {
-            if(h<10)
-            {
-                hour = "0" + h.toString();
-            }
-            else
-            {
-                hour = h.toString();
-            }
-        }
-        if(m < 0)
-        {
-            minute = "00";
-        }
-        else
-        {
-            if(m < 10)
-            {
-                minute = "0" + m.toString();
-            }
-            else
-            {
-                minute = m.toString();
-            }
-        }
-        if(s < 0)
-        {
-            seconds = "00";
-        }
-        else
-        {
-            if(s < 10)
-            {
-                seconds = "0" + s.toString();
-            }
-            else
-            {
-                seconds = s.toString();
-            }
-        }
-        this.countTime.string = hour + ":" + minute + ":" + seconds;
-    }
-
-    testSerialize()
-    {
-            var students = [{
-                    "name": "小明1",
-                   "age": "6",
-                    "sex": "男",
-                    "height": "60"
-                }, 
-                {
-                     "name": "小明2",
-                    "age": "7",
-                    "sex": "男",
-                    "height": "70"
-                },
-                {
-                 "name": "小明3",
-                    "age": "8",
-                    "sex": "男",
-                    "height": "80"
-                }];
-                let data = JSON.stringify(students)
-                jsb.fileUtils.writeStringToFile (data, "e:\hello.json");
-                       
-    }
-    // update (dt) {}
 }
