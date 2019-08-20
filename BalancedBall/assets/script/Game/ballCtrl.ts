@@ -17,11 +17,11 @@ export default class BallCtrl extends cc.Component {
 
     }
 
-    initBall(width,gameUICtrl:gameUICtrl)
+    initBall(width, gameUICtrl:gameUICtrl)
     {
        this.node.width = width;
        this.node.height = width;
-       this.physicsCtrl.radius = width/2;
+       this.physicsCtrl.radius = width / 2;
        this.physicsCtrl.apply();
        this.ballCenterCtrl.initBallCenter(gameUICtrl);
     }

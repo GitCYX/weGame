@@ -4,26 +4,29 @@ import {Global} from '../Global';
 class LoadConfig extends cc.Component{
     @executionOrder(-15)
     
-    static instance : LoadConfig = null;
+    static instance: LoadConfig = null;
     
-    onLoad (){
+    onLoad ()
+    {
         cc.game.addPersistRootNode(this.node);
         LoadConfig.instance = this;
 
         var path = 'font/Cuprum-Bold';
-        cc.loader.loadRes(path,function(err,prefab)
+        cc.loader.loadRes(path, function(err, prefab)
         {
-             if(err)
-             {
+            if (err)
+            {
                 Global.ERROR_MSG('font load fail');
-             }
-             else
-             {
+            }
+            else
+            {
                 Global.GB_GameFont = prefab;
-             }
+            }
         });
     }
 
-    start () {
+    start ()
+    {
+
     }
 };

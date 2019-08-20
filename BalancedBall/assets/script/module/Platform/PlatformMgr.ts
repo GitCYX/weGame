@@ -11,7 +11,7 @@ export class PlatformMgr extends cc.Component {
         tooltip:'正常环境下的测试头像',
         type:cc.SpriteFrame,
     })
-    testHeadImage : cc.SpriteFrame = null;
+    testHeadImage: cc.SpriteFrame = null;
 
     @property({
         tooltip:'正常环境下的测试名字',
@@ -23,17 +23,19 @@ export class PlatformMgr extends cc.Component {
     })
     testId = '001';
 
-    static instance : PlatformMgr = null;
+    static instance: PlatformMgr = null;
 
-    private curPlatformObj : PlatformBase = null;
-    private onPCTest : boolean = false;
+    private curPlatformObj: PlatformBase = null;
+    private onPCTest: boolean = false;
 
-    start () {
+    start ()
+    {
         PlatformMgr.instance = this;
         cc.game.addPersistRootNode(this.node);
 
         this.curPlatformObj = this.createPlatformObject();
-        if(!this.curPlatformObj){
+        if (!this.curPlatformObj)
+        {
             Global.ERROR_MSG('can not find platform object!');
             return;
         }
@@ -41,11 +43,14 @@ export class PlatformMgr extends cc.Component {
         this.curPlatformObj.init();
     }
 
-    private createPlatformObject(){
-        if(PlatformMgr.isFaceBookPlatform()){
+    private createPlatformObject()
+    {
+        if (PlatformMgr.isFaceBookPlatform())
+        {
             Global.INFO_MSG('current platform context is facebook!');
             return new PlatformFaceBook();
         }
+
         let baseObj = new PlatformBase();
         baseObj.setHeadSprite(this.testHeadImage);
         baseObj.setPlayerName(this.testName);
@@ -55,24 +60,31 @@ export class PlatformMgr extends cc.Component {
         return baseObj;
     }
 
-    static isFaceBookPlatform():boolean{
-        if (typeof FBInstant === 'undefined') return false;
+    static isFaceBookPlatform(): boolean
+    {
+        if (typeof FBInstant === 'undefined') 
+            return false;
+
         return true;
     }
 
-    static isNativePlatform():boolean{
+    static isNativePlatform(): boolean
+    {
         return cc.sys.isNative;
     }
 
-    static isWeChatPlatform():boolean{
+    static isWeChatPlatform(): boolean
+    {
         return (cc.sys.platform === cc.sys.WECHAT_GAME);
     }
 
-    getPlatform():PlatformBase{
+    getPlatform(): PlatformBase
+    {
         return this.curPlatformObj;
     }
 
-    isOnPCTest():boolean{
+    isOnPCTest(): boolean
+    {
         return this.onPCTest;
     }
 }

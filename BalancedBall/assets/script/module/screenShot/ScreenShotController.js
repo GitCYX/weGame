@@ -5,12 +5,14 @@ height:目标节点的高
 targetWidth: 最终图片的宽
 targetHeight: 最终图片的高
 */
-function screenShot(targetNode,width,height, targetWidth,targetHeight){
+function screenShot(targetNode,width,height, targetWidth,targetHeight)
+{
     let oldPos = targetNode.position;
 
     //截图子节点必须要有Sprite才能截图
     var newSpriteComp;
-    if(!targetNode.getComponent(cc.Sprite)){
+    if (!targetNode.getComponent(cc.Sprite))
+    {
         newSpriteComp = targetNode.addComponent(cc.Sprite);
     }
 
@@ -34,22 +36,24 @@ function screenShot(targetNode,width,height, targetWidth,targetHeight){
 
     var newSpriteFrame = new cc.SpriteFrame(renderTexture.getSprite().getTexture());
     ///注意:得到新纹理后，由于是原图大小，需要缩放到相应大小再截图一次保证图片大小合适
-    newSpriteFrame = _adjustSpriteFrame(targetNode.parent, newSpriteFrame, width,height, targetWidth,targetHeight);
+    newSpriteFrame = _adjustSpriteFrame(targetNode.parent, newSpriteFrame, width,height, targetWidth, targetHeight);
 
     //还原图片位置
     targetNode.position = oldPos;
 
-    if(newSpriteComp){
+    if (newSpriteComp)
+    {
         targetNode.removeComponent(newSpriteComp);
     }
 
     //转base64
-    var base64 = spriteFrameToImgBase64(newSpriteFrame,targetWidth,targetHeight,true);
+    var base64 = spriteFrameToImgBase64(newSpriteFrame, targetWidth, targetHeight, true);
 
     return base64;
 };
 
-function spriteFrameToImgBase64 (theSpriteFrame, width, height, isReverse) {
+function spriteFrameToImgBase64 (theSpriteFrame, width, height, isReverse)
+{
     let canvas = document.createElement('canvas');
     let ctx = canvas.getContext('2d');
     canvas.width = width;
@@ -59,7 +63,8 @@ function spriteFrameToImgBase64 (theSpriteFrame, width, height, isReverse) {
         let image = texture.getHtmlElementObj();
         ctx.drawImage(image, 0, 0);
     }
-    else if (cc._renderType === cc.game.RENDER_TYPE_WEBGL) {
+    else if (cc._renderType === cc.game.RENDER_TYPE_WEBGL) 
+    {
         let buffer = gl.createFramebuffer();
         gl.bindFramebuffer(gl.FRAMEBUFFER, buffer);
         let texture = theSpriteFrame._texture._glID;
@@ -70,16 +75,18 @@ function spriteFrameToImgBase64 (theSpriteFrame, width, height, isReverse) {
         let rowBytes = width * 4;
         for (let row = 0; row < height; row++) {
             let srow;
-            if(isReverse){
+            if (isReverse)
+            {
                 srow = height - 1 - row;
             }
-            else{
+            else
+            {
                 srow = row;
             }
             let data2 = new Uint8ClampedArray(data.buffer, srow * width * 4, rowBytes);
-            //let imageData = new ImageData(data2, width, 1);
-            let imageData = ctx.createImageData(width,1);
-            for(let i=0;i<data2.length;i++){
+            let imageData = ctx.createImageData(width, 1);
+            for (let i = 0; i < data2.length; i++)
+            {
                 imageData.data[i] = data2[i];
             }
             
@@ -89,7 +96,8 @@ function spriteFrameToImgBase64 (theSpriteFrame, width, height, isReverse) {
     return canvas.toDataURL('image/png');
 };
 
-function _adjustSpriteFrame(parent, spriteFrame, w,h, targetWidth,targetHeight){
+function _adjustSpriteFrame(parent, spriteFrame, w, h, targetWidth, targetHeight)
+{
     var newNode = new cc.Node();
     newNode.parent = parent;
 
@@ -119,28 +127,32 @@ function _adjustSpriteFrame(parent, spriteFrame, w,h, targetWidth,targetHeight){
     return new cc.SpriteFrame(renderTexture.getSprite().getTexture());
 };
 
-function base64ToSpriteFrameAsync(base,callback){
+function base64ToSpriteFrameAsync(base,callback)
+{
     var img = new Image();
     img.src = base;
 
-    img.onload = function(){
+    img.onload = function()
+    {
         var texture = new cc.Texture2D();
         texture.initWithElement(img);
         texture.handleLoadedTexture();
         var newframe = new cc.SpriteFrame(texture);
-        if(callback)callback(newframe);
+        if (callback)
+           callback(newframe);
     }
 };
 
 // 截屏返回 image base64
-function getImgBase64 () {
+function getImgBase64 ()
+{
     let target = cc.find('Canvas');
     let width = 960, height = 640;
     let renderTexture = new cc.RenderTexture(width, height);
     renderTexture.begin();
     target._sgNode.visit();
     renderTexture.end();
-    //
+
     let canvas = document.createElement('canvas');
     let ctx = canvas.getContext('2d');
     canvas.width = width;
@@ -150,7 +162,8 @@ function getImgBase64 () {
         let image = texture.getHtmlElementObj();
         ctx.drawImage(image, 0, 0);
     }
-    else if (cc._renderType === cc.game.RENDER_TYPE_WEBGL) {
+    else if (cc._renderType === cc.game.RENDER_TYPE_WEBGL)
+    {
         let buffer = gl.createFramebuffer();
         gl.bindFramebuffer(gl.FRAMEBUFFER, buffer);
         let texture = renderTexture.getSprite().getTexture()._glID;
@@ -162,7 +175,6 @@ function getImgBase64 () {
         for (let row = 0; row < height; row++) {
             let srow = height - 1 - row;
             let data2 = new Uint8ClampedArray(data.buffer, srow * width * 4, rowBytes);
-            //let imageData = new ImageData(data2, width, 1);
             let imageData = ctx.createImageData(width,1);
             for(let i=0;i<data2.length;i++){
                 imageData.data[i] = data2[i];

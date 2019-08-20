@@ -3,10 +3,10 @@ const {ccclass, property} = cc._decorator;
 export class MusicMgr extends cc.Component{
     static instance = null;
 
-    private soundEffectCtrl : any[];
-    private enableEffects : boolean;
-    private enableBGMusic : boolean;
-    private curBGMusicController : any;
+    private soundEffectCtrl: any[];
+    private enableEffects: boolean;
+    private enableBGMusic: boolean;
+    private curBGMusicController: any;
 
     onLoad () {
         cc.game.addPersistRootNode(this.node);
@@ -17,12 +17,13 @@ export class MusicMgr extends cc.Component{
     start () {
     }
 
-    getCanPlay(isBgMusic){
-        if(!this.enableEffects && !isBgMusic){
+    getCanPlay(isBgMusic)
+    {
+        if (!this.enableEffects && !isBgMusic){
             return false;
         }
 
-        if(!this.enableBGMusic && isBgMusic)
+        if (!this.enableBGMusic && isBgMusic)
         {
             return false;
         }
@@ -37,52 +38,63 @@ export class MusicMgr extends cc.Component{
 
     removeSoundEffectCtrl(controller)
     {
-        for(var i=0; i< this.soundEffectCtrl.length; i++)
+        for (var i = 0; i < this.soundEffectCtrl.length; i++)
         {
-           if(this.soundEffectCtrl[i] === controller)
-           {
-              this.soundEffectCtrl.splice(i,1);
-              return;
-           }
+            if (this.soundEffectCtrl[i] === controller)
+            {
+               this.soundEffectCtrl.splice(i,1);
+               return;
+            }
         }
     }
 
-    setBGMusicController(controller){
+    setBGMusicController(controller)
+    {
         this.curBGMusicController = controller;
     }
 
-    getBGMusicController(){
+    getBGMusicController()
+    {
         return this.curBGMusicController;
     }
 
-    bgMusicControllerIsValid(){
-        if(this.getBGMusicController() &&this.getBGMusicController().node && this.getBGMusicController().node.isValid){
+    bgMusicControllerIsValid()
+    {
+        if (this.getBGMusicController() && this.getBGMusicController().node && this.getBGMusicController().node.isValid)
+        {
             return true;
         }
+
         return false;
     }
 
-    enableMusic(enable){
+    enableMusic(enable)
+    {
         this.enableBGMusic = enable;
-        if(this.bgMusicControllerIsValid()){
-
+        if (this.bgMusicControllerIsValid())
+        {
             var musicController = this.getBGMusicController();
-            if(enable){
+            if (enable)
+            {
                 musicController.play();
             }
-            else{
+            else
+            {
                 musicController.stop();
             }
         }
     }
 
-    enableEffect(enable){
+    enableEffect(enable)
+    {
         this.enableEffects = enable;
-        if(enable){
+        if (enable)
+        {
 
         }
-        else{
-            for(var i=0; i<this.soundEffectCtrl.length; i++)
+        else
+        {
+            for (var i = 0; i < this.soundEffectCtrl.length; i++)
             {
                 this.soundEffectCtrl[i].stop();
             }

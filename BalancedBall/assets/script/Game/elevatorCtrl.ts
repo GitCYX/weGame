@@ -30,7 +30,7 @@ export default class ElevatorCtrl extends cc.Component {
     // onLoad () {}
 
     start () {
-       //this.calculateAngel();
+
     }
 
     getMoveTime()
@@ -63,16 +63,19 @@ export default class ElevatorCtrl extends cc.Component {
         return this.isRightDownLimited;
     }
 
-    initElevator(totalCanClick,perLiftDis,moveTime = 0.2)
+    initElevator(totalCanClick, perLiftDis, moveTime = 0.2)
     {
         this.totalCanClick = totalCanClick;
         this.perLiftDis = perLiftDis;
         this.moveTime = moveTime;
     }
 
-    canAnticlockRotate()//能否继续逆时针运动
+    /**
+     * 能否继续逆时针运动
+     */
+    canAnticlockRotate()
     {
-        if(this.currClickTimes-1 < -this.totalCanClick)
+        if (this.currClickTimes-1 < -this.totalCanClick)
         {
            return false;
         }
@@ -82,9 +85,12 @@ export default class ElevatorCtrl extends cc.Component {
         }
     }
 
-    canClockRotate()//能否继续顺时针运动
+    /**
+     *能否继续顺时针运动
+     */
+    canClockRotate()
     {
-        if(this.currClickTimes+1 > this.totalCanClick)
+        if (this.currClickTimes + 1 > this.totalCanClick)
         {
            return false;
         }
@@ -96,79 +102,83 @@ export default class ElevatorCtrl extends cc.Component {
 
     dealClickTimes(isAnticlock)//逆时针为减，顺时针为加
     {
-        if(isAnticlock)
+        if (isAnticlock)
         {
-            this.currClickTimes --;
+            this.currClickTimes--;
         }
         else
         {
-            this.currClickTimes ++;
+            this.currClickTimes++;
         }
     }
 
-    rightMove_up()//右上
+    rightMove_up()
     {
-        if(!this.isRightUpFinish)
+        if (!this.isRightUpFinish)
         {
            return;
         }
+
         this.isRightUpFinish = false;
         this.moveRightLift(true);
         this.dealClickTimes(true);
         this.scheduleOnce(()=>{
            this.isRightUpFinish = true;
-        },this.moveTime+0.01);
+        }, this.moveTime + 0.01);
     }
 
-    leftMove_up()//左上
+    leftMove_up()
     {
-        if(!this.isLeftUpFinish)
+        if (!this.isLeftUpFinish)
         {
            return;
         }
+
         this.isLeftUpFinish = false;
         this.moveLeftLift(true);
         this.dealClickTimes(false);
         this.scheduleOnce(()=>{
             this.isLeftUpFinish = true;
-         },this.moveTime+0.01);
+         }, this.moveTime + 0.01);
     }
 
-    rightMove_down()//右下
+    rightMove_down()
     {
-        if(!this.isRightDownFinish)
+        if (!this.isRightDownFinish)
         {
            return;
         }
+
         this.isRightDownFinish = false;
         this.moveRightLift(false);
         this.dealClickTimes(false);
         this.scheduleOnce(()=>{
             this.isRightDownFinish = true;
-         },this.moveTime+0.01);
+         }, this.moveTime + 0.01);
     }
 
-    leftMove_down()//左下
+    leftMove_down()
     {
-        if(!this.isLeftDownFinish)
+        if (!this.isLeftDownFinish)
         {
            return;
         }
+
         this.isLeftDownFinish = false;
         this.moveLeftLift(false);
         this.dealClickTimes(true);
         this.scheduleOnce(()=>{
            this.isLeftDownFinish = true;
-        },this.moveTime+0.01);
+        },this.moveTime + 0.01);
     }
 
     moveLeftLift(isUp)
     {
         let pos = this.leftLift.position;
-        if(isUp)
+        if (isUp)
         {
             pos.y += this.perLiftDis;
-            if(pos.y > this.highestY)
+            if (pos.y > this.highestY)
             {
                 pos.y = this.highestY;
                 this.isLeftUpLimited = true;
@@ -178,7 +188,7 @@ export default class ElevatorCtrl extends cc.Component {
         else
         {
             pos.y -= this.perLiftDis;
-            if(pos.y < this.lowestY)
+            if (pos.y < this.lowestY)
             {
                 pos.y = this.lowestY;
                 this.isLeftDownLimited = true;
@@ -192,10 +202,10 @@ export default class ElevatorCtrl extends cc.Component {
     moveRightLift(isUp)
     {
         let pos = this.rightLift.position;
-        if(isUp)
+        if (isUp)
         {
             pos.y += this.perLiftDis;
-            if(pos.y > this.highestY)
+            if (pos.y > this.highestY)
             {
                 pos.y = this.highestY;
                 this.isRightUpLimited = true;
@@ -205,7 +215,7 @@ export default class ElevatorCtrl extends cc.Component {
         else
         {
             pos.y -= this.perLiftDis; 
-            if(pos.y < this.lowestY)
+            if (pos.y < this.lowestY)
             {
                 pos.y = this.lowestY;
                 this.isRightDownLimited = true;
@@ -215,7 +225,4 @@ export default class ElevatorCtrl extends cc.Component {
         let action = cc.moveTo(this.moveTime,pos);
         this.rightLift.runAction(action);
     }
-
-    
-    // update (dt) {}
 }

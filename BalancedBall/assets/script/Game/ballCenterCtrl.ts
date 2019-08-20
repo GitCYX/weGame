@@ -25,11 +25,11 @@ export default class BallCenterCtrl extends cc.Component {
 
     onBeginContact(contact,selfCollider,otherCollider)
     {
-        if(otherCollider.node.name === 'hole')
+        if (otherCollider.node.name === 'hole')
         {
             this.gameUICrtl.setGameOver(false);
         }
-        if(otherCollider.node.name === 'exitHole')
+        if (otherCollider.node.name === 'exitHole')
         {
             this.gameUICrtl.setGameOver(true);
         }

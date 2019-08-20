@@ -5,19 +5,19 @@ export class MyLabel extends cc.Label{
     @property
     isUseOverFlow = false;
 
-    private hasSetFont : boolean;
-    onLoad () 
+    private hasSetFont: boolean;
+    onLoad ()
     {
         this.hasSetFont = false;
         this.isSystemFontUsed = false;
     }
 
-    start () 
+    start ()
     {
        
-        if(!this.isSystemFontUsed)
+        if (!this.isSystemFontUsed)
         {
-            if(this.isUseOverFlow)
+            if (this.isUseOverFlow)
             {
                 this.overflow = 3;
             }

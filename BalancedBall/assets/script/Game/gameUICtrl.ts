@@ -3,9 +3,9 @@ import elevatorCtrl from './ElevatorCtrl';
 import createScrewAxis from './CreateScrewAxis';
 import gameLogic from './GameLogic';
 import ballCtrl from './BallCtrl';
-import LanguageMgr from '../module/i18n/LanguageMgr';
+import LanguageMgr from '../Module/i18n/LanguageMgr';
 import holeCtrl from './HoleCtrl';
-import { Global } from '../module/Global';
+import { Global } from '../Module/Global';
 @ccclass
 export default class GameUICtrl extends cc.Component {
 

@@ -37,12 +37,11 @@ export default class CreateScrewAxis extends cc.Component {
     {
         this.gainUICtrl = ctrl;
         this.moveTime = ctrl.elevatorCtrl.getMoveTime();
-        //this.moveDis = ctrl.elevatorCtrl.getRiseDistance();
     }
 
     createScrew()
     {
-        for(let i=0; i<this.screwsNum; i++)
+        for (let i = 0; i < this.screwsNum; i++)
         {
           let screw = cc.instantiate(this.screwPref);
           screw.parent = this.node;
@@ -52,10 +51,11 @@ export default class CreateScrewAxis extends cc.Component {
 
     playRiseAnim()
     {
-        if(this.isRising)
+        if (this.isRising)
         {
            return;
         }
+
         this.isRising = true;
         let p = this.node.position;
         p.y += this.moveDis;
@@ -65,15 +65,16 @@ export default class CreateScrewAxis extends cc.Component {
         this.scheduleOnce(()=>{
             this.isRising = false;
             this.node.y -= this.moveDis;//将该节点移动回原位
-        },this.moveTime)
+        }, this.moveTime)
     }
 
     playDescendAnim()
     {
-        if(this.isDescending)
+        if (this.isDescending)
         {
            return;
         }
+
         this.isDescending = true;
         let p = this.node.position;
         p.y -= this.moveDis;
@@ -83,7 +84,7 @@ export default class CreateScrewAxis extends cc.Component {
         this.scheduleOnce(()=>{
             this.isDescending = false;
             this.node.y += this.moveDis;//将该节点移动回原位
-        },this.moveTime)
+        }, this.moveTime)
     }
     // update (dt) {}
 }

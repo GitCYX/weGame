@@ -3,7 +3,7 @@ import {PlatformBase,PlayerProperty,PurchaseFunc} from '../Platform/PlatformBase
 
 export class PlatformFaceBook extends PlatformBase{
 
-    private paymentsIsReady : boolean = false;
+    private paymentsIsReady: boolean = false;
 
     init(){
         this.playerName = FBInstant.player.getName();
@@ -29,11 +29,12 @@ export class PlatformFaceBook extends PlatformBase{
     }
 
     //好友列表
-    getConnectedFriendsAsync(callback : PlayerProperty){
+    getConnectedFriendsAsync(callback: PlayerProperty)
+    {
         var connectedPlayers = FBInstant.player.getConnectedPlayersAsync()
         .then(function(players) {
-            let playersList : any = [];
-            for(var i=0;i<players.length;i++)
+            let playersList: any = [];
+            for (var i = 0; i < players.length; i++)
             {
                 var player = players[i];
                 var data = {
@@ -42,7 +43,8 @@ export class PlatformFaceBook extends PlatformBase{
                     photoUrl : player.getPhoto()
                 };
                 
-                if(data.id !== this.getPlayerId()){
+                if (data.id !== this.getPlayerId())
+                {
                     playersList.push(data);
                 }
             }
@@ -51,11 +53,13 @@ export class PlatformFaceBook extends PlatformBase{
         // [{id: '123456789', name: 'Paul Atreides' , photoUrl：'http://...'}, {id: '987654321', name: 'Duncan Idaho',photoUrl：'http://...'}]
     }
 
-    quitGame () {
+    quitGame ()
+    {
         FBInstant.quit();
     }
 
-    shareGame(text:string,imageBase64:string,callback:Function){
+    shareGame(text:string, imageBase64:string, callback:Function)
+    {
         //intent ("INVITE" | "REQUEST" | "CHALLENGE" | "SHARE") Indicates the intent of the share.
         FBInstant.shareAsync({
             intent: 'REQUEST',
@@ -68,7 +72,8 @@ export class PlatformFaceBook extends PlatformBase{
     }
 
     //激励广告预加载
-    preLoadRewardedVideo(placementId:string,callback:Function){
+    preLoadRewardedVideo(placementId:string, callback:Function)
+    {
         var preloadedRewardedVideo = null;
 
         FBInstant.getRewardedVideoAsync(
@@ -89,7 +94,8 @@ export class PlatformFaceBook extends PlatformBase{
     }
 
     //激励广告播放
-    showRewardedVideo(rewarded,callback:Function){
+    showRewardedVideo(rewarded,callback:Function)
+    {
         rewarded.showAsync()
         .then(function() {
             // Perform post-ad success operation
@@ -102,34 +108,39 @@ export class PlatformFaceBook extends PlatformBase{
         });
     }
 
-    inviteFriends(text:string,imageBase64:string,callback:Function,entryPointData = null){
+    inviteFriends(text:string, imageBase64:string, callback:Function, entryPointData = null)
+    {
         let self = this;
         this.chooseAsync(function(isSuc:boolean){
-            if(isSuc){
-                self.updateAsync(text,imageBase64,callback,entryPointData);
+            if (isSuc)
+            {
+                self.updateAsync(text, imageBase64, callback, entryPointData);
             }
-            else{
+            else
+            {
                 callback(false);
             }
         });
     }
 
     //拉好友一起玩
-    chooseAsync(callback:Function){
+    chooseAsync(callback:Function)
+    {
         //console.log('chooseAsync old = ' + FBInstant.context.getID());
         FBInstant.context
         .chooseAsync()
         .then(function() {
             console.log('chooseAsync resolve call back = ' + FBInstant.context.getID());
             callback(true);
-        }).catch(function(e){
+        }).catch(function(e) {
             console.log('chooseAsync reject call back = ' + FBInstant.context.getID());
             callback(false);
         });
     }
 
     //与指定好友一起玩
-    createAsync(userId,callback){
+    createAsync(userId, callback)
+    {
         FBInstant.context
         .createAsync(userId)
         .then(function() {
@@ -139,7 +150,8 @@ export class PlatformFaceBook extends PlatformBase{
     }
 
     //与指定环境的好友一起玩
-    switchAsync(contextId,callback){
+    switchAsync(contextId, callback)
+    {
         FBInstant.context
         .switchAsync(contextId)
         .then(function() {
@@ -149,7 +161,8 @@ export class PlatformFaceBook extends PlatformBase{
     }
 
     //随机匹配对手
-    matchPlayerAsync(isSwitchContext,callback){
+    matchPlayerAsync(isSwitchContext, callback)
+    {
         FBInstant
         .checkCanPlayerMatchAsync()
         .then(canMatch => {
@@ -161,19 +174,21 @@ export class PlatformFaceBook extends PlatformBase{
                     callback(true);
                 });
             }
-            else{
+            else
+            {
                 callback(false);
             }
         });
     }
 
     //获取3个月以来玩过此款游戏的玩家(包括了自己)
-    getPlayersAsync(callback:PlayerProperty){
+    getPlayersAsync(callback:PlayerProperty)
+    {
         FBInstant.context.getPlayersAsync()
         .then(function(players) {
 
             let playersList : any = [];
-            for(var i=0;i<players.length;i++)
+            for (var i = 0; i < players.length; i++)
             {
                 var player = players[i];
                 var data = {
@@ -182,7 +197,8 @@ export class PlatformFaceBook extends PlatformBase{
                     photoUrl : player.getPhoto()
                 };
 
-                if(data.id !== this.getPlayerId()){
+                if (data.id !== this.getPlayerId())
+                {
                     playersList.push(data);
                 }
             }
@@ -204,7 +220,7 @@ export class PlatformFaceBook extends PlatformBase{
     }
 
     //对同一环境Id组的玩家在messenger上推送消息
-    updateAsync(text,imageBase64,callback,entryPointData = null){
+    updateAsync(text, imageBase64, callback, entryPointData = null){
         FBInstant.updateAsync({
             action: 'CUSTOM',
             cta: 'Play',
@@ -228,7 +244,8 @@ export class PlatformFaceBook extends PlatformBase{
           });
     }
 
-    getEntryPointData():any{
+    getEntryPointData(): any
+    {
         return FBInstant.getEntryPointData();
     }
 
@@ -256,8 +273,10 @@ export class PlatformFaceBook extends PlatformBase{
     }
 
     //获取排行榜
-    getLeaderboard(boardName,callback){
-        if(FBInstant.context.getID()){
+    getLeaderboard(boardName,callback)
+    {
+        if (FBInstant.context.getID())
+        {
             boardName = boardName + '.' + FBInstant.context.getID();
         }
        
@@ -297,8 +316,10 @@ export class PlatformFaceBook extends PlatformBase{
     }
 
     //在messenger上推送排行榜消息
-    leaderboardUpdateAsync(boardName,callback){
-        if(FBInstant.context.getID()){
+    leaderboardUpdateAsync(boardName,callback)
+    {
+        if (FBInstant.context.getID())
+        {
             boardName = boardName + '.' + FBInstant.context.getID();
         }
 
@@ -317,15 +338,18 @@ export class PlatformFaceBook extends PlatformBase{
     }
 
     //测试当前平台是否支持支付
-    canSupportPaymentsPurchase():boolean{
-        if(!this.paymentsIsReady){
+    canSupportPaymentsPurchase(): boolean
+    {
+        if (!this.paymentsIsReady)
+        {
             console.log('payments onReady not call back!');
             return false;
         }
 
         var apiList = FBInstant.getSupportedAPIs();
-        for(let i=0; i<apiList.length; i++){
-            if(apiList[i] === 'payments.purchaseAsync'){
+        for (let i = 0; i < apiList.length; i++)
+        {
+            if (apiList[i] === 'payments.purchaseAsync'){
                 console.log('payments.purchaseAsync API is Support!');
                 return true;
             }
@@ -349,7 +373,8 @@ export class PlatformFaceBook extends PlatformBase{
         ...
     ]
     */
-    getCatalogAsync(callback){
+    getCatalogAsync(callback)
+    {
         FBInstant.payments.getCatalogAsync().then(function (catalog) {
             callback(catalog);
              // [{productID: '12345', ...}, ...]
@@ -367,7 +392,8 @@ export class PlatformFaceBook extends PlatformBase{
         signedRequest : '',
     }
     */
-    purchaseAsync(productID, callback:PurchaseFunc){
+    purchaseAsync(productID, callback:PurchaseFunc)
+    {
         var strProductID = '' + productID;
         FBInstant.payments.purchaseAsync({
             productID: strProductID,
@@ -379,7 +405,8 @@ export class PlatformFaceBook extends PlatformBase{
     }
 
     //获取玩家拥有的商品，但是尚未消费的
-    getPurchasesAsync(callback){
+    getPurchasesAsync(callback)
+    {
         FBInstant.payments.getPurchasesAsync().then(function (purchases) {
             callback(purchases);
             // [{productID: '12345', ...}, ...]
@@ -387,7 +414,8 @@ export class PlatformFaceBook extends PlatformBase{
     }
     
     //消费玩家拥有的商品
-    consumePurchaseAsync(purchaseToken:string,callback){
+    consumePurchaseAsync(purchaseToken:string, callback)
+    {
         FBInstant.payments.consumePurchaseAsync(purchaseToken).then(function () {
             // Purchase successfully consumed!
             // Game should now provision the product to the player

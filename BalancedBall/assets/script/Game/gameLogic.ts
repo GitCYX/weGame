@@ -3,7 +3,7 @@ import gameUICtrl from './GameUICtrl';
 @ccclass
 export default class GameLogic extends cc.Component {
 
-    gameUICtrl:gameUICtrl = null;
+    gameUICtrl: gameUICtrl = null;
     // LIFE-CYCLE CALLBACKS:
     // onLoad () {}
 

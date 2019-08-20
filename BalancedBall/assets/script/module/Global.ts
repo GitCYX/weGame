@@ -31,6 +31,7 @@ export class Global{
 		}
 		return true;
 	}
+
 	static GlobalEventMap = {
 		ChangeScene:'ChangeScene',
 		ExitStore:'ExitStore',
@@ -74,7 +75,7 @@ export class Global{
 		return min + Math.floor((max - min) * ratio);
 	};
 
-	static TimeFormt = function (sec:number) : string
+	static TimeFormt = function (sec:number): string
 	{
 		if (sec <= 0)
 		{
