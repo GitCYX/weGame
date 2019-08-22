@@ -72,7 +72,7 @@ export class Global{
 	static GetRandomInt = function (min, max)
 	{
 		var ratio = cc.random0To1();
-		return min + Math.floor((max - min) * ratio);
+		return min + Math.floor((max - min) * ratio);cc.instantiate
 	};
 
 	static TimeFormt = function (sec:number): string

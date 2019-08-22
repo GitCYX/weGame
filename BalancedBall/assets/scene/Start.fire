@@ -44,8 +44,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.4274658203125,
-      "y": 0.4274658203125,
+      "x": 0.153125,
+      "y": 0.153125,
       "z": 1
     },
     "_quat": {
@@ -55,7 +55,6 @@
       "z": 0,
       "w": 1
     },
-    "_zIndex": 0,
     "groupIndex": 0,
     "autoReleaseAssets": false,
     "_id": "eec67354-3e5c-4f83-83c0-64cbcb52f4d4"
@@ -93,8 +92,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 720,
-      "height": 1280
+      "width": 1080,
+      "height": 1920
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -103,8 +102,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 360,
-      "y": 640,
+      "x": 540,
+      "y": 960,
       "z": 0
     },
     "_scale": {
@@ -124,7 +123,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": "dfBkdmIWpBcKqn8nWaP9yI"
   },
@@ -185,7 +183,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": "28/dDKCvBNHK6qC8pkpFM/"
   },
@@ -213,7 +210,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Sprite(Splash)",
+    "_name": "BG",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -237,8 +234,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 720,
-      "height": 1280
+      "width": 1080,
+      "height": 1920
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -268,7 +265,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": "0dAm3W2S1EzJHcbkdZDv0P"
   },
@@ -310,8 +306,8 @@
     "_enabled": true,
     "_designResolution": {
       "__type__": "cc.Size",
-      "width": 720,
-      "height": 1280
+      "width": 1080,
+      "height": 1920
     },
     "_fitWidth": true,
     "_fitHeight": true,
@@ -339,6 +335,9 @@
       },
       {
         "__id__": 12
+      },
+      {
+        "__id__": 13
       }
     ],
     "_prefab": null,
@@ -383,7 +382,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": "f844RCWHdHfrCa43wH5zOE"
   },
@@ -417,7 +415,7 @@
     },
     "_enabled": true,
     "preloadSceneList": [
-      "Game"
+      "Main"
     ],
     "preLoadOnLoad": true,
     "_id": "4dZtTBMYhD+51H4w9FQlW7"
@@ -431,5 +429,15 @@
     },
     "_enabled": true,
     "_id": "6daBwheZFLjYbAs21cOxxa"
+  },
+  {
+    "__type__": "316e2LVUXZPjIr8N2e7G2EC",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 8
+    },
+    "_enabled": true,
+    "_id": "2aFVJrKRdCWKQyHGqBcFup"
   }
 ]

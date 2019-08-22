@@ -1,0 +1,1 @@
+export var levelConfig = [{"gameIndex":4,"blockName":"testBlock2","gameTime":60,"platformDeltaMove":20,"platformMostMove":100,"ballsInfo":[{"width":200,"pos":{"x":229,"y":-657},"friction":0.2}],"exitsInfo":[{"width":112,"pos":{"x":225,"y":471}}],"holesInfo":[{"width":200,"pos":{"x":-267,"y":194}},{"width":112,"pos":{"x":0,"y":78}},{"width":112,"pos":{"x":320,"y":78}}]}]

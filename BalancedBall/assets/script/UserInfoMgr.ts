@@ -32,11 +32,11 @@ export class UserInfoMgr extends cc.Component {
         // this.node.on('connectSuc', this.installEvents, this);
         // this.connectDisconnected = onfire.on("onclose",this.serverOnClose.bind(this));
         this.scheduleOnce(()=>{
-            this.node.emit(Global.GlobalEventMap.ChangeScene, {sceneName:'Game'});
+            this.node.emit(Global.GlobalEventMap.ChangeScene, {sceneName:'Main'});
         }, 0);
     }
 
-    start () 
+    start ()
     {
        // this.preLoadADVideo();
     }
