@@ -23,11 +23,12 @@ export class UserInfoMgr extends cc.Component {
     private preloadADSErrorCode: string;
     private userMatchResultEvent: any;
     private isServerClose: boolean = false;
+    private currentPlayLevel = -1;
 
     onLoad () 
     {
         cc.game.addPersistRootNode(this.node);
-        // UserInfoMgr.instance = this;
+        UserInfoMgr.instance = this;
         // this.node.on('startLogin', this._startLogin, this);
         // this.node.on('connectSuc', this.installEvents, this);
         // this.connectDisconnected = onfire.on("onclose",this.serverOnClose.bind(this));
@@ -110,5 +111,15 @@ export class UserInfoMgr extends cc.Component {
     quitGame()
     {
         PlatformMgr.instance.getPlatform().quitGame();
+    }
+
+    setCurrentPlayLevel(level)
+    {
+        this.currentPlayLevel = level;
+    }
+
+    getCurrentPlayLevel()
+    {
+        return this.currentPlayLevel;
     }
 };

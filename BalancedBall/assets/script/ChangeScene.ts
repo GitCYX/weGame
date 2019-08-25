@@ -13,10 +13,10 @@ export default class ChangeScene extends cc.Component {
 
     @property
     preLoadOnLoad: boolean = true;
-    onLoad () {
-        
-        this.node.on(Global.GlobalEventMap.ChangeScene, this._changeScene.bind(this), this.node);
 
+    onLoad ()
+    {
+        this.node.on(Global.GlobalEventMap.ChangeScene, this._changeScene.bind(this), this.node);
         if (this.preloadSceneList.length <= 0)
         {
             Global.WARNING_MSG('preload scene list is null! please setup the preload scene.');
@@ -46,5 +46,9 @@ export default class ChangeScene extends cc.Component {
         }
     }
 
+    changeScene(sceneName:string)
+    {
+        this.node.emit(Global.GlobalEventMap.ChangeScene, {sceneName:sceneName});
+    }
     // update (dt) {}
 }

@@ -1,25 +1,34 @@
+import { ResMgr } from "../Resload/ResMgr";
+import LevelDetailWindowCtrl from "./LevelDetailWindowCtrl";
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class LevelItemCtrl extends cc.Component {
 
-    @property(cc.Label)
-    label: cc.Label = null;
+    @property(cc.Node)
+    levelBtn: cc.Node = null;
 
     @property
     text: string = 'hello';
 
-    // LIFE-CYCLE CALLBACKS:
-
-    // onLoad () {}
+    level: number = -1;
 
     start () {
-
+        this.levelBtn.on("click", this.onLevelBtnClicked, this);
     }
 
-    initItem ()
+    initItem (level)
     {
-
+        this.level = level;
     }
-    // update (dt) {}
+
+    onLevelBtnClicked ()
+    {
+        let self = this;
+        ResMgr.instance.getResObjByName("LevelDetailWindow").then((detailWind:cc.Node)=>{
+            let levelDetailWindowCtrl = detailWind.getComponent(LevelDetailWindowCtrl);
+            levelDetailWindowCtrl.initWindow(self.level);
+        });
+    }
 }

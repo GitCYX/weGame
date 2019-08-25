@@ -23,7 +23,7 @@ export default class LeveChooseWindowCtrl extends cc.Component {
             let levelItemNode = cc.instantiate(this.levelItemPrefab);
             this.content.addChild(levelItemNode);
             let levelItemCtrl = levelItemNode.getComponent(LevelItemCtrl);
-            levelItemCtrl.initItem();
+            levelItemCtrl.initItem(i);
         }
     }
 

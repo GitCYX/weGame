@@ -9,21 +9,19 @@ export default class BallCtrl extends cc.Component {
 
     @property(cc.PhysicsCircleCollider)
     physicsCtrl: cc.PhysicsCircleCollider = null;
-    // LIFE-CYCLE CALLBACKS:
-
-    // onLoad () {}
 
     start () {
 
     }
 
-    initBall(width, gameUICtrl:gameUICtrl)
+
+    initBall(width, friction, gameUICtrl:gameUICtrl)
     {
        this.node.width = width;
        this.node.height = width;
-       this.physicsCtrl.radius = width / 2;
+       this.physicsCtrl.radius = width/2;
+       this.physicsCtrl.friction = friction;
        this.physicsCtrl.apply();
        this.ballCenterCtrl.initBallCenter(gameUICtrl);
     }
-    // update (dt) {}
 }

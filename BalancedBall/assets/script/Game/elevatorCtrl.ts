@@ -30,9 +30,15 @@ export default class ElevatorCtrl extends cc.Component {
     // onLoad () {}
 
     start () {
-
+        this.node.zIndex = 10;
     }
 
+    setElevatorProperty(deltaMove,maxDeltaMove)
+    {
+        this.perLiftDis = deltaMove;
+        this.totalCanClick = Math.ceil(maxDeltaMove/deltaMove);
+    }
+    
     getMoveTime()
     {
        return this.moveTime;

@@ -7,6 +7,7 @@ export class ResMgr extends cc.Component {
     static instance: ResMgr = null;
     private resList: cc.Prefab[] = [];
     private readonly mainPrefabFolder: string = "MainScenePrefab/";
+    private readonly gamePrefabFolder: string = "GameScenePrefab/";
 
     start () {
         ResMgr.instance = this;
@@ -18,6 +19,7 @@ export class ResMgr extends cc.Component {
     {
         this.preLoadRes("LevelChooseWindow", this.mainPrefabFolder);
         this.preLoadRes("LevelDetailWindow", this.mainPrefabFolder);
+        this.preLoadRes("GameClearWindow", this.gamePrefabFolder);
     }
 
     getPrefabByName(name:string): cc.Prefab

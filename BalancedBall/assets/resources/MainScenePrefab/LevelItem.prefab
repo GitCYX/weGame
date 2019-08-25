@@ -428,7 +428,9 @@
       "__id__": 1
     },
     "_enabled": true,
-    "label": null,
+    "levelBtn": {
+      "__id__": 3
+    },
     "text": "hello",
     "_id": ""
   },

@@ -23,8 +23,9 @@ export default class BallCenterCtrl extends cc.Component {
         this.gameUICrtl = ctrl;
     }
 
-    onBeginContact(contact,selfCollider,otherCollider)
+    onBeginContact(contact, selfCollider, otherCollider)
     {
+        console.log(otherCollider.node.name);
         if (otherCollider.node.name === 'hole')
         {
             this.gameUICrtl.setGameOver(false);

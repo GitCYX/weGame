@@ -6,6 +6,10 @@ import ballCtrl from './BallCtrl';
 import LanguageMgr from '../Module/i18n/LanguageMgr';
 import holeCtrl from './HoleCtrl';
 import { Global } from '../Module/Global';
+import { UserInfoMgr } from '../UserInfoMgr';
+import { levelConfig } from '../Config/Config';
+import { ResMgr } from '../Resload/ResMgr';
+import ClearWindowCtrl from './ClearWindowCtrl';
 @ccclass
 export default class GameUICtrl extends cc.Component {
 
@@ -29,9 +33,6 @@ export default class GameUICtrl extends cc.Component {
 
     @property(cc.Prefab)
     exitHolePref:cc.Prefab = null;
-
-    @property(cc.Label)
-    gameResult:cc.Label = null;
 
     @property(cc.Label)
     countTime:cc.Label = null;
@@ -88,76 +89,60 @@ export default class GameUICtrl extends cc.Component {
         this.initGame()
     }
 
-    initGame()
+    initGame () 
     {
-        this._timeNow = 3600;
+        let level = UserInfoMgr.instance.getCurrentPlayLevel();
+        let currentLevelConfig = levelConfig[level];
+        this._timeNow = currentLevelConfig.gameTime;
         this.updateTime();
-        let ball = cc.instantiate(this.ballPref);
-        ball.parent = this.node;
-        ball.position = this.def_BallPos;
-        let ballComp = ball.getComponent(ballCtrl);
-        ballComp.initBall(50, this);
-
-        for (let i = 0; i < 4; i++)
+        this.elevatorCtrl.setElevatorProperty(currentLevelConfig.platformDeltaMove, currentLevelConfig.platformMostMove);
+        if (currentLevelConfig.exitsInfo)//创建出口
         {
-            let hole = cc.instantiate(this.holePref);
-            hole.parent = this.node;
-            hole.position = new cc.Vec2(i * 100, i * 100);
-            let holeComp = hole.getComponent(holeCtrl);
-            holeComp.initHole(50 + i * 20);
+            for (let i = 0; i < currentLevelConfig.exitsInfo.length; i++)
+            {
+                let exithole = cc.instantiate(this.exitHolePref);
+                exithole.parent = this.node;
+                exithole.position = new cc.Vec2(currentLevelConfig.exitsInfo[i].pos.x, currentLevelConfig.exitsInfo[i].pos.y);
+                let exitholeComp = exithole.getComponent(holeCtrl);
+                exitholeComp.initHole(currentLevelConfig.exitsInfo[i].width);
+            }
         }
-       
-        for (let i = 0; i < 4; i++)
+  
+        if (currentLevelConfig.holesInfo)//创建洞口
         {
-            let hole = cc.instantiate(this.holePref);
-            hole.parent = this.node;
-            hole.position = new cc.Vec2(-i * 100, i * 100 + 100);
-            let holeComp = hole.getComponent(holeCtrl);
-            holeComp.initHole(50 + i * 20);
-        }
-
-        for (let i = 0; i < 4; i++)
-        {
-            let hole = cc.instantiate(this.holePref);
-            hole.parent = this.node;
-            hole.position = new cc.Vec2(-i * 100,-i * 100);
-            let holeComp = hole.getComponent(holeCtrl);
-            holeComp.initHole(50 + i * 20);
-        }
-       
-        for (let i = 0; i < 4; i++)
-        {
-            let hole = cc.instantiate(this.holePref);
-            hole.parent = this.node;
-            hole.position = new cc.Vec2(i * 100, -i * 100 - 100);
-            let holeComp = hole.getComponent(holeCtrl);
-            holeComp.initHole(50 + i * 20);
+            for (let i = 0; i < currentLevelConfig.holesInfo.length; i++)
+            {
+                let hole = cc.instantiate(this.holePref);
+                hole.parent = this.node;
+                hole.position = new cc.Vec2(currentLevelConfig.holesInfo[i].pos.x, currentLevelConfig.holesInfo[i].pos.y);
+                let holeComp = hole.getComponent(holeCtrl);
+                holeComp.initHole(currentLevelConfig.holesInfo[i].width);
+            }
         }
 
-        let exithole = cc.instantiate(this.exitHolePref);
-        exithole.parent = this.node;
-        exithole.position = new cc.Vec2(200, 500);
-        let exitholeComp = exithole.getComponent(holeCtrl);
-        exitholeComp.initHole(50);
+        if (currentLevelConfig.ballsInfo)//创建球
+        {
+            for (let i = 0; i < currentLevelConfig.ballsInfo.length; i++)
+            {
+                let ball = cc.instantiate(this.ballPref);
+                ball.parent = this.node;
+                ball.position = new cc.Vec2(currentLevelConfig.ballsInfo[i].pos.x, currentLevelConfig.ballsInfo[i].pos.y);
+                let ballComp = ball.getComponent(ballCtrl);
+                ballComp.initBall(currentLevelConfig.ballsInfo[i].width, currentLevelConfig.ballsInfo[i].friction, this);
+
+                let physicsComp = ball.getComponent(cc.PhysicsCircleCollider);
+                physicsComp.friction = currentLevelConfig.ballsInfo[i].friction;
+                physicsComp.apply();
+            }
+        }
     }
 
     setGameOver(result)
     {
-        this.gameResult.node.active = true;
-        this.gameResult.node.zIndex = 50;
-        if (result)
-        {
-            this.isGameOver = true;
-            let str = LanguageMgr.instance.getLabel('winGame');
-            this.gameResult.string = str;
-        }
-        else
-        {
-            this.isGameOver = true;
-            let str = LanguageMgr.instance.getLabel('loseGame');
-            this.gameResult.string = str;
-        }
-       
+        this.isGameOver = true;
+        ResMgr.instance.getResObjByName("GameClearWindow").then((obj:cc.Node)=>{
+            obj.getComponent(ClearWindowCtrl).initClearPanel(result);
+        })
     }
 
     onKeyDown(event)
