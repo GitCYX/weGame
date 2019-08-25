@@ -24,9 +24,9 @@ export default class ElevatorCtrl extends cc.Component {
     isLeftDownFinish:boolean = true;
 
     isLeftUpLimited:boolean = false;
-    isLeftDownLimited:boolean = false;
+    isLeftDownLimited:boolean = true;
     isRightUpLimited:boolean = false;
-    isRightDownLimited:boolean = false;
+    isRightDownLimited:boolean = true;
     // onLoad () {}
 
     start () {
@@ -81,7 +81,7 @@ export default class ElevatorCtrl extends cc.Component {
      */
     canAnticlockRotate()
     {
-        if (this.currClickTimes-1 < -this.totalCanClick)
+        if (this.currClickTimes - 1 < -this.totalCanClick)
         {
            return false;
         }
@@ -184,7 +184,7 @@ export default class ElevatorCtrl extends cc.Component {
         if (isUp)
         {
             pos.y += this.perLiftDis;
-            if (pos.y > this.highestY)
+            if (pos.y >= this.highestY)
             {
                 pos.y = this.highestY;
                 this.isLeftUpLimited = true;
@@ -194,7 +194,7 @@ export default class ElevatorCtrl extends cc.Component {
         else
         {
             pos.y -= this.perLiftDis;
-            if (pos.y < this.lowestY)
+            if (pos.y <= this.lowestY)
             {
                 pos.y = this.lowestY;
                 this.isLeftDownLimited = true;
@@ -211,7 +211,7 @@ export default class ElevatorCtrl extends cc.Component {
         if (isUp)
         {
             pos.y += this.perLiftDis;
-            if (pos.y > this.highestY)
+            if (pos.y >= this.highestY)
             {
                 pos.y = this.highestY;
                 this.isRightUpLimited = true;
@@ -221,7 +221,7 @@ export default class ElevatorCtrl extends cc.Component {
         else
         {
             pos.y -= this.perLiftDis; 
-            if (pos.y < this.lowestY)
+            if (pos.y <= this.lowestY)
             {
                 pos.y = this.lowestY;
                 this.isRightDownLimited = true;
