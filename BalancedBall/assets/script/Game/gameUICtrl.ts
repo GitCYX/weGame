@@ -52,9 +52,12 @@ export default class GameUICtrl extends cc.Component {
     @property(cc.Node)
     leftDownBtn: cc.Node = null;
 
-    isGameOver:boolean = false;
-    def_BallPos:cc.Vec2 = cc.v2(0,-300);
-    _timeNow:number = 0;
+    isGameOver: boolean = false;
+    def_BallPos: cc.Vec2 = cc.v2(0,-300);
+    _timeNow: number = 0;
+    oneStarTime: number = 0;
+    twoStarTime: number = 0;
+    threeStarTime: number = 0;
 
     onLoad () 
     {
@@ -93,48 +96,67 @@ export default class GameUICtrl extends cc.Component {
     {
         let level = UserInfoMgr.instance.getCurrentPlayLevel();
         let currentLevelConfig = levelConfig[level];
-        this._timeNow = currentLevelConfig.gameTime;
+        this._timeNow = currentLevelConfig.oneStarTime;
+        this.oneStarTime = currentLevelConfig.oneStarTime;
+        this.twoStarTime = currentLevelConfig.twoStarTime;
+        this.threeStarTime = currentLevelConfig.threeStarTime;
+        this.countTime.string = Global.TimeFormt(this._timeNow);
         this.updateTime();
         this.elevatorCtrl.setElevatorProperty(currentLevelConfig.platformDeltaMove, currentLevelConfig.platformMostMove);
-        if (currentLevelConfig.exitsInfo)//创建出口
-        {
-            for (let i = 0; i < currentLevelConfig.exitsInfo.length; i++)
-            {
-                let exithole = cc.instantiate(this.exitHolePref);
-                exithole.parent = this.node;
-                exithole.position = new cc.Vec2(currentLevelConfig.exitsInfo[i].pos.x, currentLevelConfig.exitsInfo[i].pos.y);
-                let exitholeComp = exithole.getComponent(holeCtrl);
-                exitholeComp.initHole(currentLevelConfig.exitsInfo[i].width);
-            }
-        }
-  
-        if (currentLevelConfig.holesInfo)//创建洞口
-        {
-            for (let i = 0; i < currentLevelConfig.holesInfo.length; i++)
-            {
-                let hole = cc.instantiate(this.holePref);
-                hole.parent = this.node;
-                hole.position = new cc.Vec2(currentLevelConfig.holesInfo[i].pos.x, currentLevelConfig.holesInfo[i].pos.y);
-                let holeComp = hole.getComponent(holeCtrl);
-                holeComp.initHole(currentLevelConfig.holesInfo[i].width);
-            }
-        }
+        this.createExitHole(currentLevelConfig.exitsInfo);
+        this.createHole(currentLevelConfig.holesInfo);
+        this.createPlayerBall(currentLevelConfig.ballsInfo);
+    }
 
-        if (currentLevelConfig.ballsInfo)//创建球
+    createExitHole (exitsInfo: any)
+    {
+        if (exitsInfo)
         {
-            for (let i = 0; i < currentLevelConfig.ballsInfo.length; i++)
+            for (let i = 0; i < exitsInfo.length; i++)
             {
-                let ball = cc.instantiate(this.ballPref);
-                ball.parent = this.node;
-                ball.position = new cc.Vec2(currentLevelConfig.ballsInfo[i].pos.x, currentLevelConfig.ballsInfo[i].pos.y);
+                let exithole = this.instantObj(this.exitHolePref, this.node, new cc.Vec2(exitsInfo[i].pos.x, exitsInfo[i].pos.y));
+                let exitholeComp = exithole.getComponent(holeCtrl);
+                exitholeComp.initHole(exitsInfo[i].width);
+            }
+        }
+    }
+
+    createHole (holesInfo: any)
+    {
+        if (holesInfo)
+        {
+            for (let i = 0; i < holesInfo.length; i++)
+            {
+                let hole = this.instantObj(this.holePref, this.node, new cc.Vec2(holesInfo[i].pos.x, holesInfo[i].pos.y));
+                let holeComp = hole.getComponent(holeCtrl);
+                holeComp.initHole(holesInfo[i].width);
+            }
+        }
+    }
+
+    createPlayerBall (ballsInfo: any)
+    {
+        if (ballsInfo)
+        {
+            for (let i = 0; i < ballsInfo.length; i++)
+            {
+                let ball = this.instantObj(this.ballPref, this.node, new cc.Vec2(ballsInfo[i].pos.x, ballsInfo[i].pos.y));
                 let ballComp = ball.getComponent(ballCtrl);
-                ballComp.initBall(currentLevelConfig.ballsInfo[i].width, currentLevelConfig.ballsInfo[i].friction, this);
+                ballComp.initBall(ballsInfo[i].width, ballsInfo[i].friction, this);
 
                 let physicsComp = ball.getComponent(cc.PhysicsCircleCollider);
-                physicsComp.friction = currentLevelConfig.ballsInfo[i].friction;
+                physicsComp.friction = ballsInfo[i].friction;
                 physicsComp.apply();
             }
         }
+    }
+
+    instantObj (prefab:cc.Prefab, parent:cc.Node, initPos:cc.Vec2): cc.Node
+    {
+        let obj = cc.instantiate(prefab);
+        obj.parent = parent;
+        obj.position = initPos;
+        return obj;
     }
 
     setGameOver(result)
@@ -236,7 +258,25 @@ export default class GameUICtrl extends cc.Component {
             this.setGameOver(false);
             return;
         }
-        this._timeNow -= 1;  
+        this._timeNow -= 1;
+        this.gainStarByTime();
         this.countTime.string = Global.TimeFormt(this._timeNow);
+    }
+
+    gainStarByTime()
+    {
+        let passTime = this.oneStarTime - this._timeNow;
+        if (passTime < this.threeStarTime)
+        {
+            //TO DO: will get three stars
+        }
+        else if (passTime < this.twoStarTime)
+        {
+            //TO DO: will get two stars
+        }
+        else
+        {
+            //To Do: will get one star
+        }
     }
 }

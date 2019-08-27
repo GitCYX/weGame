@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.17949236569351473,
-      "y": 0.17949236569351473,
+      "x": 0.21197916666666666,
+      "y": 0.21197916666666666,
       "z": 1
     },
     "_quat": {
@@ -2727,7 +2727,6 @@
     "_fontSize": 40,
     "_lineHeight": 50,
     "_enableWrapText": true,
-    "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -2753,7 +2752,6 @@
     "_fontSize": 40,
     "_lineHeight": 50,
     "_enableWrapText": true,
-    "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
