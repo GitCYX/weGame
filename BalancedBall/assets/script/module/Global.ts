@@ -71,7 +71,7 @@ export class Global{
 	 */
 	static GetRandomInt = function (min, max)
 	{
-		var ratio = cc.random0To1();
+		var ratio = Math.random();
 		return min + Math.floor((max - min) * ratio);cc.instantiate
 	};
 
@@ -91,5 +91,13 @@ export class Global{
 		minute = m < 10 ? ("0" + m) : m.toString();
         seconds = s < 10 ? ("0" + s) : s.toString();
 		return hour + ":" + minute + ":" + seconds;
+	}
+
+	/**
+	 * accurate millionsecond
+	 */
+	static getCurrentTimestamp = function(): number
+	{
+		return new Date().getTime();
 	}
 }

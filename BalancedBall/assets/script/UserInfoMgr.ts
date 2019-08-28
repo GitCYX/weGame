@@ -5,15 +5,7 @@ import LanguageMgr from './Module/i18n/LanguageMgr';
 import {Global} from './Module/Global';
 import ScreenShotController = require('./Module/ScreenShot/ScreenShotController');
 const {ccclass, property} = cc._decorator;
-export const SceneFlag = cc.Enum({
-    None:-1,
-    main:1,
-    game:2,
-    rank:3,
-    asseble:4,
-    createWorld:5,
-    challengeScene:6
-});
+
 
 @ccclass
 export class UserInfoMgr extends cc.Component {
