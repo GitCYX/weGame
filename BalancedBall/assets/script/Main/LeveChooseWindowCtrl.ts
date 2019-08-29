@@ -11,9 +11,12 @@ export default class LeveChooseWindowCtrl extends cc.Component {
     @property(cc.Node)
     content: cc.Node = null;
 
+    @property(cc.Node)
+    bgButton: cc.Node = null;
 
     start () {
         this.init();
+        this.bgButton.on("click", this.OnBgButtonClicked, this);
     }
 
     init ()
@@ -27,6 +30,10 @@ export default class LeveChooseWindowCtrl extends cc.Component {
         }
     }
 
-    
+    OnBgButtonClicked()
+    {
+        this.node.destroy();
+    }
+
     // update (dt) {}
 }

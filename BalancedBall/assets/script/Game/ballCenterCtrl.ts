@@ -1,13 +1,13 @@
 const {ccclass, property} = cc._decorator;
-import gameUICrtl from './GameUICtrl';
+import GameLogic from './GameLogic';
+
 @ccclass
 export default class BallCenterCtrl extends cc.Component {
 
     @property(cc.RigidBody)
     rigidbody: cc.RigidBody = null;
 
-    gameUICrtl:gameUICrtl = null;
-    // LIFE-CYCLE CALLBACKS:
+    gameLogic:GameLogic = null;
 
     onLoad () 
     {
@@ -18,21 +18,20 @@ export default class BallCenterCtrl extends cc.Component {
 
     }
 
-    initBallCenter(ctrl)
+    initBallCenter(gameLogic)
     {
-        this.gameUICrtl = ctrl;
+        this.gameLogic = gameLogic;
     }
 
     onBeginContact(contact, selfCollider, otherCollider)
     {
-        console.log(otherCollider.node.name);
         if (otherCollider.node.name === 'hole')
         {
-            this.gameUICrtl.setGameOver(false);
+            this.gameLogic.setGameOver(false);
         }
         if (otherCollider.node.name === 'exitHole')
         {
-            this.gameUICrtl.setGameOver(true);
+            this.gameLogic.setGameOver(true);
         }
     }
     // update (dt) {}

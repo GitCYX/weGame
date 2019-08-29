@@ -5,13 +5,13 @@ export class LocalStorage
     private static _inst: LocalStorage;
     gameDataKey: string = "__balancedBallData__";
 
-    latestTimeToEnterGame: number = 0;
-    isFirstTimeToPlayGame: boolean = true;
-    isFirstTimeToPlayGameToday: boolean = true;
-    hasSharedToday: boolean = false;
-    playerEnergyValue: number = 30;
-    playerCoin: number = 1000;
-    passLevelTimes: number[] = []; //每一关通关的时间数组
+    private latestTimeToEnterGame: number = 0;
+    private isFirstTimeToPlayGame: boolean = true;
+    private isFirstTimeToPlayGameToday: boolean = true;
+    private hasSharedToday: boolean = false;
+    private playerEnergyValue: number = 30;
+    private playerCoin: number = 1000;
+    private passLevelTimes: number[] = []; //每一关通关的时间数组，-1表示已经解锁，但还未拿到星
 
     IsFirstTimeToPlayGame()
     {
@@ -61,15 +61,16 @@ export class LocalStorage
         return this.passLevelTimes;
     }
 
-    AddPassedLevelInfo(span: number)
+    UpdatePassedLevelInfo(index:number, span:number)
     {
-        this.passLevelTimes.push(span);
-        this.saveDataToLocal();
-    }
-
-    ChangePassedLevelInfo(index:number, span:number)
-    {
-        this.passLevelTimes[index] = span;
+        if (index <= this.passLevelTimes.length - 1)
+        {
+            this.passLevelTimes[index] = span;
+        }
+        else
+        {
+            this.passLevelTimes.push(span);
+        }
         this.saveDataToLocal();
     }
 
@@ -113,7 +114,7 @@ export class LocalStorage
             this.hasSharedToday = false;
             this.playerEnergyValue = 30;
             this.playerCoin = 1000;
-            this.passLevelTimes = [];
+            this.passLevelTimes.push(-1);
         }
         else
         {

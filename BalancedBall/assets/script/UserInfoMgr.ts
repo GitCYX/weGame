@@ -4,6 +4,7 @@ import * as MD_NetworkMgr from './Module/Network/NetworkMgr';
 import LanguageMgr from './Module/i18n/LanguageMgr';
 import {Global} from './Module/Global';
 import ScreenShotController = require('./Module/ScreenShot/ScreenShotController');
+import { LocalStorage } from './GameData/LocalStorage';
 const {ccclass, property} = cc._decorator;
 
 
@@ -21,6 +22,7 @@ export class UserInfoMgr extends cc.Component {
     {
         cc.game.addPersistRootNode(this.node);
         UserInfoMgr.instance = this;
+        LocalStorage.getInst().prepareData();
         // this.node.on('startLogin', this._startLogin, this);
         // this.node.on('connectSuc', this.installEvents, this);
         // this.connectDisconnected = onfire.on("onclose",this.serverOnClose.bind(this));

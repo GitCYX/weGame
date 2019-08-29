@@ -52,12 +52,10 @@ export default class GameUICtrl extends cc.Component {
     @property(cc.Node)
     leftDownBtn: cc.Node = null;
 
-    isGameOver: boolean = false;
-    def_BallPos: cc.Vec2 = cc.v2(0,-300);
-    _timeNow: number = 0;
-    oneStarTime: number = 0;
-    twoStarTime: number = 0;
-    threeStarTime: number = 0;
+    @property([cc.Node])
+    stars: cc.Node[] = [];
+
+    private currentShowStarNum: number = 3;
 
     onLoad () 
     {
@@ -96,12 +94,8 @@ export default class GameUICtrl extends cc.Component {
     {
         let level = UserInfoMgr.instance.getCurrentPlayLevel();
         let currentLevelConfig = levelConfig[level];
-        this._timeNow = currentLevelConfig.oneStarTime;
-        this.oneStarTime = currentLevelConfig.oneStarTime;
-        this.twoStarTime = currentLevelConfig.twoStarTime;
-        this.threeStarTime = currentLevelConfig.threeStarTime;
-        this.countTime.string = Global.TimeFormt(this._timeNow);
-        this.updateTime();
+        let oneStarTime = currentLevelConfig.oneStarTime;
+        this.countTime.string = Global.TimeFormt(oneStarTime);
         this.elevatorCtrl.setElevatorProperty(currentLevelConfig.platformDeltaMove, currentLevelConfig.platformMostMove);
         this.createExitHole(currentLevelConfig.exitsInfo);
         this.createHole(currentLevelConfig.holesInfo);
@@ -159,17 +153,42 @@ export default class GameUICtrl extends cc.Component {
         return obj;
     }
 
-    setGameOver(result)
+    setGameOver(isSuccess)
     {
-        this.isGameOver = true;
         ResMgr.instance.getResObjByName("GameClearWindow").then((obj:cc.Node)=>{
-            obj.getComponent(ClearWindowCtrl).initClearPanel(result);
+            obj.getComponent(ClearWindowCtrl).initClearPanel(isSuccess);
         })
+    }
+
+    updateGameTime(time: number)
+    {
+        this.countTime.string = Global.TimeFormt(time);
+    }
+
+    showStar(count: number)
+    {
+        if (this.currentShowStarNum === count)
+        {
+            return;
+        }
+
+        this.currentShowStarNum = count;
+        for (let i = 0; i < 3; i++)
+        {
+            if (i < count)
+            {
+                this.stars[i].color = new cc.Color(255, 255, 255);
+            }
+            else
+            {
+                this.stars[i].color = new cc.Color(126, 66, 66);
+            }
+        }
     }
 
     onKeyDown(event)
     {
-        if (this.isGameOver)
+        if (this.gameLogic.IsGameOver())
         {
            return;
         }
@@ -192,7 +211,7 @@ export default class GameUICtrl extends cc.Component {
 
     leftUpBtnClick()
     {
-        if (this.isGameOver || !this.elevatorCtrl.canClockRotate() || this.elevatorCtrl.getLeftUpLimited())
+        if (this.gameLogic.IsGameOver() || !this.elevatorCtrl.canClockRotate() || this.elevatorCtrl.getLeftUpLimited())
         {
            return;
         }
@@ -203,7 +222,7 @@ export default class GameUICtrl extends cc.Component {
 
     leftDownBtnClick()
     {
-        if (this.isGameOver || !this.elevatorCtrl.canAnticlockRotate() || this.elevatorCtrl.getLeftDownLimited())
+        if (this.gameLogic.IsGameOver() || !this.elevatorCtrl.canAnticlockRotate() || this.elevatorCtrl.getLeftDownLimited())
         {
            return;
         }
@@ -214,7 +233,7 @@ export default class GameUICtrl extends cc.Component {
 
     rightUpBtnClick()
     {
-        if (this.isGameOver || !this.elevatorCtrl.canAnticlockRotate() || this.elevatorCtrl.getRightUpLimited())
+        if (this.gameLogic.IsGameOver() || !this.elevatorCtrl.canAnticlockRotate() || this.elevatorCtrl.getRightUpLimited())
         {
            return;
         }
@@ -225,7 +244,7 @@ export default class GameUICtrl extends cc.Component {
 
     rightDownBtnClick()
     {
-        if (this.isGameOver || !this.elevatorCtrl.canClockRotate() || this.elevatorCtrl.getRightDownLimited())
+        if (this.gameLogic.IsGameOver() || !this.elevatorCtrl.canClockRotate() || this.elevatorCtrl.getRightDownLimited())
         {
            return;
         }
@@ -234,49 +253,4 @@ export default class GameUICtrl extends cc.Component {
         this.elevatorCtrl.rightMove_down();
     }
 
-    /**
-     * 倒计时
-     */
-    updateTime()
-    {
-        this.schedule(function(){
-            this.dealTime();
-        }, 1);
-    }
-
-    dealTime()
-    {
-        if (this.isGameOver)
-        {
-            this.unscheduleAllCallbacks();
-            return;
-        }
-
-        if (this._timeNow <= 0)
-        {
-            this.unscheduleAllCallbacks();
-            this.setGameOver(false);
-            return;
-        }
-        this._timeNow -= 1;
-        this.gainStarByTime();
-        this.countTime.string = Global.TimeFormt(this._timeNow);
-    }
-
-    gainStarByTime()
-    {
-        let passTime = this.oneStarTime - this._timeNow;
-        if (passTime < this.threeStarTime)
-        {
-            //TO DO: will get three stars
-        }
-        else if (passTime < this.twoStarTime)
-        {
-            //TO DO: will get two stars
-        }
-        else
-        {
-            //To Do: will get one star
-        }
-    }
 }
